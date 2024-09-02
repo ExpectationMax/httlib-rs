@@ -1,5 +1,8 @@
 /// Provides available decoding speed options which represent the number of bits
 /// that the decoder can read at a time.
+use alloc::vec;
+use alloc::vec::Vec;
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DecoderSpeed {
     /// Indicates that a decoder should read 1-bit at a time.

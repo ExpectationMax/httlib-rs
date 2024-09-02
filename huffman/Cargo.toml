@@ -12,5 +12,8 @@ keywords = ["huffman", "canonical", "hpack", "http"]
 categories = ["algorithms", "encoding"]
 readme = "README.md"
 
+[dependencies]
+libm = "0.2.8"
+
 # [badges]
 # travis-ci = { repository = "https://github.com/xpepermint/httlib-rs", branch = "master" }
