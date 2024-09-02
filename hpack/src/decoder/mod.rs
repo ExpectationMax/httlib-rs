@@ -21,6 +21,7 @@
 mod error;
 mod primitives;
 
+use alloc::vec::Vec;
 pub use error::*;
 use primitives::*;
 pub use httlib_huffman::DecoderSpeed;
@@ -401,6 +402,7 @@ impl<'a> Default for Decoder<'a> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use alloc::vec;
 
     /// Should decode the HPACK's indexed header field representation into a
     /// header that exists in the indexing table ([6.1.], figure 5).

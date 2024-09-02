@@ -77,7 +77,8 @@
 //! 
 //! [HPACK]: https://tools.ietf.org/html/rfc7541
 //! [HTTP/2]: https://tools.ietf.org/html/rfc7540
-
+#![no_std]
+extern crate alloc;
 pub mod decoder;
 pub mod encoder;
 pub mod table;

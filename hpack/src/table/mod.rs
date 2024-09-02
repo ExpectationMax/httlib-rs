@@ -70,6 +70,7 @@ mod dynamic;
 mod iter;
 mod r#static;
 
+use alloc::vec::Vec;
 pub use iter::TableIter;
 use dynamic::DynamicTable;
 use r#static::{StaticTable, STATIC_TABLE};

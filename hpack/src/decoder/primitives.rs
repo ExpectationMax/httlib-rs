@@ -1,4 +1,5 @@
 use super::*;
+use alloc::vec::Vec;
 
 /// Decodes an integer number encoded with a given prefix size (in bits) based
 /// on the pseudocode provided by the HPACK specification ([5.1.]).

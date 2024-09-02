@@ -1,5 +1,3 @@
-use std::fmt;
-use std::error;
 use httlib_huffman::{DecoderError as HuffmanError};
 
 /// Contains error options that can be encountered while performing the decoding
@@ -38,18 +36,3 @@ impl From<HuffmanError> for DecoderError {
         }
     }
 }
-
-impl fmt::Display for DecoderError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Self::InvalidInput => write!(fmt, "Invalid input character."),
-            Self::InvalidIndex => write!(fmt, "Invalid index."),
-            Self::InvalidPrefix => write!(fmt, "Invalid prefix."),
-            Self::IntegerOverflow => write!(fmt, "Too many bytes."),
-            Self::IntegerUnderflow => write!(fmt, "Not enough bytes."),
-            Self::InvalidMaxDynamicSize => write!(fmt, "New size exceeds hard limit."),
-        }
-    }
-}
-
-impl error::Error for DecoderError {}

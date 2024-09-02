@@ -65,6 +65,7 @@ mod error;
 mod input;
 mod primitives;
 
+use alloc::vec::Vec;
 pub use error::*;
 pub use input::*;
 use primitives::*;

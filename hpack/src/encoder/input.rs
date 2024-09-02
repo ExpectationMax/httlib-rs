@@ -1,4 +1,6 @@
 /// Provides encoder input format options.
+use alloc::vec::Vec;
+
 #[derive(Debug)]
 pub enum EncoderInput {
     /// Represents a fully indexed header field.

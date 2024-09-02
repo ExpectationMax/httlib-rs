@@ -1,4 +1,5 @@
 use super::*;
+use alloc::vec::Vec;
 
 /// Encodes an integer number to the integer representation defined by HPACK
 /// based on the pseudocode provided by the HPACK specification ([5.1.]).

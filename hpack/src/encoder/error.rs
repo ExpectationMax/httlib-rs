@@ -1,5 +1,3 @@
-use std::fmt;
-use std::error;
 use httlib_huffman::{EncoderError as HuffmanError};
 
 /// Contains error options that can be encountered while performing the encoding
@@ -32,16 +30,3 @@ impl From<HuffmanError> for EncoderError {
         }
     }
 }
-
-impl fmt::Display for EncoderError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Self::InvalidInput => write!(fmt, "Invalid input character."),
-            Self::InvalidIndex => write!(fmt, "Invalid index."),
-            Self::InvalidPrefix => write!(fmt, "Invalid prefix."),
-            Self::IntegerOverflow => write!(fmt, "Too many bytes."),
-        }
-    }
-}
-
-impl error::Error for EncoderError {}

@@ -1,4 +1,5 @@
-use std::collections::VecDeque;
+use alloc::vec::Vec;
+use alloc::collections::VecDeque;
 
 /// Represents a [dynamic table] with header fields maintained in first-in,
 /// first-out order.
