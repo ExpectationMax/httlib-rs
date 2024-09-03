@@ -2,7 +2,7 @@ use httlib_huffman::{EncoderError as HuffmanError};
 
 /// Contains error options that can be encountered while performing the encoding
 /// of an HPACK header set.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, defmt::Format)]
 pub enum EncoderError {
     /// Indicates that the encoder received an invalid ASCII character and is
     /// thus unable to perform the (Huffman) encoding. Note that only ASCII

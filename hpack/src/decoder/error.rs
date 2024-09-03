@@ -2,7 +2,7 @@ use httlib_huffman::{DecoderError as HuffmanError};
 
 /// Contains error options that can be encountered while performing the decoding
 /// of an HPACK header set.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, defmt::Format)]
 pub enum DecoderError {
     /// Indicates that the decoder received an invalid (Huffman) buffer. This
     /// should never happen if the input is encoded according to the HPACK spec.
