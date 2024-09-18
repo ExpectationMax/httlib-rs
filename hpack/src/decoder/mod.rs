@@ -100,12 +100,12 @@ impl<'a> Decoder<'a> {
     /// provided vector will stay untouched in case of an error.
     pub fn decode(
         &mut self,
-        buf: &mut Vec<u8>,
+        buf: &[u8],
         dst: &mut Vec<(Vec<u8>, Vec<u8>, u8)>,
     ) -> Result<usize, DecoderError> {
         let mut total = 0;
         loop {
-            if buf.is_empty() {
+            if buf.len() == total {
                 return Ok(total);
             }
 
@@ -138,13 +138,13 @@ impl<'a> Decoder<'a> {
     /// provided vector will stay untouched in case of an error.
     pub fn decode_exact(
         &mut self,
-        buf: &mut Vec<u8>,
+        buf: &[u8],
         dst: &mut Vec<(Vec<u8>, Vec<u8>, u8)>,
     ) -> Result<usize, DecoderError> {
         let mut total = 0;
         let mut limit = dst.capacity();
         loop {
-            if buf.is_empty() || limit == 0 {
+            if buf.len() == total || limit == 0 {
                 return Ok(total);
             } else {
                 limit -= 1;
@@ -152,11 +152,11 @@ impl<'a> Decoder<'a> {
 
             let octet = buf[0];
             if octet & 128 == 128 { // indexed
-                total += self.decode_indexed(buf, dst)?;
+                total += self.decode_indexed(&buf[total..], dst)?;
             } else if octet & 64 == 64 { // with indexing
-                total += self.decode_literal(buf, dst)?;
+                total += self.decode_literal(&buf[total..], dst)?;
             } else if octet & 32 == 32 {
-                self.update_max_dynamic_size(buf)?;
+                self.update_max_dynamic_size(&buf[total..])?;
             } else if octet & 16 == 16 { // never indexed
                 total += self.decode_literal(buf, dst)?;
             } else { // without indexing
@@ -185,7 +185,7 @@ impl<'a> Decoder<'a> {
     /// [6.1.]: https://tools.ietf.org/html/rfc7541#section-6.1
     fn decode_indexed(
         &self,
-        buf: &mut Vec<u8>,
+        buf: &[u8],
         dst: &mut Vec<(Vec<u8>, Vec<u8>, u8)>,
     ) -> Result<usize, DecoderError> {
         let mut index = 0;
@@ -197,7 +197,6 @@ impl<'a> Decoder<'a> {
         };
         dst.push((name.to_vec(), value.to_vec(), 0x0));
 
-        buf.drain(0..total);
         Ok(total)
     }
 
@@ -308,7 +307,7 @@ impl<'a> Decoder<'a> {
     /// [6.2.3.]: https://tools.ietf.org/html/rfc7541#section-6.2.3
     fn decode_literal(
         &mut self,
-        buf: &mut Vec<u8>,
+        buf: &[u8],
         dst: &mut Vec<(Vec<u8>, Vec<u8>, u8)>,
     ) -> Result<usize, DecoderError> {
         let mut total = 0;
@@ -345,7 +344,6 @@ impl<'a> Decoder<'a> {
             dst.push((name, value, 0x0));
         }
 
-        buf.drain(0..total);
         Ok(total)
     }
 
@@ -372,7 +370,7 @@ impl<'a> Decoder<'a> {
     /// [6.3]: https://tools.ietf.org/html/rfc7541#section-6.3
     fn update_max_dynamic_size(
         &mut self,
-        buf: &mut Vec<u8>,
+        buf: &[u8],
     ) -> Result<usize, DecoderError> {
         let mut new_size = 0;
         let total = decode_integer(buf, &mut new_size, 5)?;
@@ -383,7 +381,6 @@ impl<'a> Decoder<'a> {
             self.table.update_max_dynamic_size(new_size);
         }
 
-        buf.drain(0..total);
         Ok(total)
     }
 }

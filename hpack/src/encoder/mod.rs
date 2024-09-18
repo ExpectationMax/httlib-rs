@@ -145,7 +145,7 @@ impl<'a> Encoder<'a> {
         dst: &mut Vec<u8>,
     ) -> Result<(), EncoderError>
     where
-        F: Into<EncoderInput>,
+        F: Into<EncoderInput<'a>>,
     {
         match field.into() {
             EncoderInput::Indexed(index) => {
@@ -161,14 +161,14 @@ impl<'a> Encoder<'a> {
                             self.encode_indexed(index as u32, dst)
                         },
                         Some((index, false)) => {
-                            self.encode_indexed_name(index as u32, value, flags, dst)
+                            self.encode_indexed_name(index as u32, value.to_vec(), flags, dst)
                         },
                         None => {
-                            self.encode_literal(name, value, flags, dst)
+                            self.encode_literal(name.to_vec(), value.to_vec(), flags, dst)
                         },
                     }
                 } else {
-                    self.encode_literal(name, value, flags, dst)
+                    self.encode_literal(name.to_vec(), value.to_vec(), flags, dst)
                 }
             },
         }
